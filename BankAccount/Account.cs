@@ -53,6 +53,16 @@ namespace BankAccount
         /// <returns>Returns updated balance after withdrawal</returns>
         public double Withdraw(double amt)
         {
+            if (amt <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"{nameof(amt)} must be greater than 0");
+            }
+
+            if (amt > Balance)
+            {
+                throw new ArgumentException($"{nameof(amt)} must be less than or equal to balance");
+            }
+
             Balance -= amt;
             return Balance;
         }

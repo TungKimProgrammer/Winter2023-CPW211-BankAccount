@@ -77,67 +77,49 @@ namespace BankAccount.Tests
 
             // Assert
             Assert.AreEqual(expectedBalance, actualBalance);
-
         }
 
         [TestMethod]
-        [DataRow(50)]
-        public void Withdraw_APositiveAmount_ReturnsUpdatedBalance(double aPositiveAmount)
+        [DataRow(100, 50)]
+        [DataRow(100, .99)]
+        public void Withdraw_APositiveAmount_ReturnsUpdatedBalance(double initialDeposit, double aPositiveAmount)
         {
             // Arrange
-            double initialDeposit = 100;
             double expectedBalance = initialDeposit - aPositiveAmount;
 
             // Act
             acc.Deposit(initialDeposit);
-            acc.Withdraw(aPositiveAmount);
-
-            double actualBalance = acc.Balance;
+            double returnValue = acc.Withdraw(aPositiveAmount);
 
             // Assert
-            Assert.AreEqual(expectedBalance, actualBalance);
-
+            Assert.AreEqual(expectedBalance, returnValue);
         }
 
         [TestMethod]
         [DataRow(0)]
         [DataRow(-.01)]
         [DataRow(-10)]
-        public void Withdraw_ZeroOrLess_ThrowsArgumentOutOfRangeException(double aPositiveAmount)
+        public void Withdraw_ZeroOrLess_ThrowsArgumentOutOfRangeException(double zeroOrLess)
         {
             // Arrange
-            double initialDeposit = 100;
-            double expectedBalance = initialDeposit - aPositiveAmount;
 
             // Act
-            acc.Deposit(initialDeposit);
-            acc.Withdraw(aPositiveAmount);
-
-            double actualBalance = acc.Balance;
-
+            
             // Assert
-            Assert.AreEqual(expectedBalance, actualBalance);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => acc.Withdraw(zeroOrLess));
 
         }
 
         [TestMethod]
-        [DataRow(0)]
-        [DataRow(-.01)]
-        [DataRow(-10)]
-        public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException(double aPositiveAmount)
+        [DataRow(1000)]
+        public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException(double moreThanAvailableBalance)
         {
             // Arrange
-            double initialDeposit = 100;
-            double expectedBalance = initialDeposit - aPositiveAmount;
 
             // Act
-            acc.Deposit(initialDeposit);
-            acc.Withdraw(aPositiveAmount);
-
-            double actualBalance = acc.Balance;
 
             // Assert
-            Assert.AreEqual(expectedBalance, actualBalance);
+            Assert.ThrowsException<ArgumentException>(() => acc.Withdraw(moreThanAvailableBalance));
 
         }
     }
