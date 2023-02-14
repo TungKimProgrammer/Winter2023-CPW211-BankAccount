@@ -60,10 +60,7 @@ namespace BankAccount.Tests
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => acc.Deposit(invalidDepositAmount));
         }
 
-        // Withdrawing a positive amount - returns updated balance
-        //             0 - Throw ArgumentOutOfRangeException
-        //             negative amount - Throw ArgumentOutOfRangeException
-        //             more than balance - Throw ArgumentException
+        
         [TestMethod]
         [DataRow(50)]
         public void Withdraw_APositiveAmount_DecreasesBalance(double aPositiveAmount)
@@ -82,5 +79,72 @@ namespace BankAccount.Tests
             Assert.AreEqual(expectedBalance, actualBalance);
 
         }
+
+        [TestMethod]
+        [DataRow(50)]
+        public void Withdraw_APositiveAmount_ReturnsUpdatedBalance(double aPositiveAmount)
+        {
+            // Arrange
+            double initialDeposit = 100;
+            double expectedBalance = initialDeposit - aPositiveAmount;
+
+            // Act
+            acc.Deposit(initialDeposit);
+            acc.Withdraw(aPositiveAmount);
+
+            double actualBalance = acc.Balance;
+
+            // Assert
+            Assert.AreEqual(expectedBalance, actualBalance);
+
+        }
+
+        [TestMethod]
+        [DataRow(0)]
+        [DataRow(-.01)]
+        [DataRow(-10)]
+        public void Withdraw_ZeroOrLess_ThrowsArgumentOutOfRangeException(double aPositiveAmount)
+        {
+            // Arrange
+            double initialDeposit = 100;
+            double expectedBalance = initialDeposit - aPositiveAmount;
+
+            // Act
+            acc.Deposit(initialDeposit);
+            acc.Withdraw(aPositiveAmount);
+
+            double actualBalance = acc.Balance;
+
+            // Assert
+            Assert.AreEqual(expectedBalance, actualBalance);
+
+        }
+
+        [TestMethod]
+        [DataRow(0)]
+        [DataRow(-.01)]
+        [DataRow(-10)]
+        public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException(double aPositiveAmount)
+        {
+            // Arrange
+            double initialDeposit = 100;
+            double expectedBalance = initialDeposit - aPositiveAmount;
+
+            // Act
+            acc.Deposit(initialDeposit);
+            acc.Withdraw(aPositiveAmount);
+
+            double actualBalance = acc.Balance;
+
+            // Assert
+            Assert.AreEqual(expectedBalance, actualBalance);
+
+        }
     }
+
 }
+
+// Withdrawing a positive amount - returns updated balance
+//             0 - Throw ArgumentOutOfRangeException
+//             negative amount - Throw ArgumentOutOfRangeException
+//             more than balance - Throw ArgumentException
